@@ -2,7 +2,7 @@
 
 Migração de bancos de dados relacionais para bancos em grafos (Neo4j) com
 inferência semântica via Modelo de Linguagem e validação formal através do
-Índice de Fidelidade Semântica (IFS).
+índice proposto: Íncide de Fidelidade Semântica (IFS).
 
 ## Arquitetura
 
