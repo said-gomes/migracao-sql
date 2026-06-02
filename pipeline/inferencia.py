@@ -12,7 +12,7 @@ A saída é um mapeamento JSON auditável, consumido pelas Camadas 3 e 4.
 
 import json
 import re
-import anthropic
+import google.generativeai as genai
 
 
 PROMPT_TEMPLATE = """\
@@ -113,18 +113,18 @@ def _validar_mapeamento(mapeamento: dict) -> bool:
 def inferir_mapeamento(schema: dict, api_key: str, model: str,
                         max_tokens: int = 4000) -> dict:
     """Chama o LLM e retorna o mapeamento semântico validado."""
-    client = anthropic.Anthropic(api_key=api_key)
+    genai.configure(api_key=api_key)
+    cliente = genai.GenerativeModel(model)
     prompt = PROMPT_TEMPLATE.format(
         schema_json=json.dumps(schema, indent=2, ensure_ascii=False)
     )
 
-    resposta = client.messages.create(
-        model=model,
-        max_tokens=max_tokens,
-        messages=[{"role": "user", "content": prompt}],
+    resposta = cliente.generate_content(
+        prompt,
+        generation_config=genai.types.GenerationConfig(max_output_tokens=max_tokens),
     )
 
-    texto = resposta.content[0].text
+    texto = resposta.text
     mapeamento = _extrair_json(texto)
     _validar_mapeamento(mapeamento)
     return mapeamento

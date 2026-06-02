@@ -20,8 +20,8 @@ NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
 NEO4J_PASS = os.getenv("NEO4J_PASS", "senha")
 
 # Modelo de Linguagem
-LLM_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
-LLM_MODEL   = os.getenv("LLM_MODEL", "claude-sonnet-4-20250514")
+LLM_API_KEY = os.getenv("GOOGLE_API_KEY", "")
+LLM_MODEL   = os.getenv("LLM_MODEL", "gemini-2.0-flash")
 LLM_MAX_TOKENS = 4000
 
 # Migração

@@ -7,7 +7,7 @@ Apresenta o mapeamento inferido pelo LLM para o usuário, que pode aceitar,
 editar ou rejeitar cada decisão. Mantém um humano no processo enquanto
 preserva a automatização das demais etapas.
 
-Versão de terminal (MVP). Pode evoluir para interface web (ex: Streamlit).
+Versão de terminal (MVP). 
 """
 
 import json

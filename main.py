@@ -38,7 +38,7 @@ def main():
     # ─── CAMADA 2 ────────────────────────────────────────────────────
     print("\n[2/5] Inferindo mapeamento semântico com o LLM...")
     if not config.LLM_API_KEY:
-        print("  [erro] ANTHROPIC_API_KEY não configurada. Abortando.")
+        print("  [erro] GOOGLE_API_KEY não configurada. Abortando.")
         sys.exit(1)
     mapeamento = inferir_mapeamento(
         schema, config.LLM_API_KEY, config.LLM_MODEL, config.LLM_MAX_TOKENS
