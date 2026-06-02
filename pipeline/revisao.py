@@ -1,7 +1,5 @@
 """
-pipeline/revisao.py
-===================
-CAMADA 3 — Revisão Humana do Mapeamento.
+3. Revisão Humana.
 
 Apresenta o mapeamento inferido pelo LLM para o usuário, que pode aceitar,
 editar ou rejeitar cada decisão. Mantém um humano no processo enquanto

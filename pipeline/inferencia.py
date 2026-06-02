@@ -1,7 +1,5 @@
 """
-pipeline/inferencia.py
-======================
-CAMADA 2 — Inferência Semântica com Modelo de Linguagem.
+2. Inferência Semântica com Modelo de Linguagem.
 
 Submete o esquema relacional a um LLM, que classifica cada tabela como
 nó ou relacionamento associativo, nomeia os relacionamentos com verbos
@@ -12,7 +10,9 @@ A saída é um mapeamento JSON auditável, consumido pelas Camadas 3 e 4.
 
 import json
 import re
+import time
 import google.generativeai as genai
+from google.api_core.exceptions import ResourceExhausted
 
 
 PROMPT_TEMPLATE = """\
@@ -74,7 +74,7 @@ exatamente nesta estrutura:
 
 
 def _extrair_json(texto: str) -> dict:
-    """Extrai o bloco JSON da resposta do modelo, de forma robusta."""
+    """Extrai o bloco JSON da resposta do modelo"""
     # tenta parsear direto
     try:
         return json.loads(texto)
@@ -119,10 +119,28 @@ def inferir_mapeamento(schema: dict, api_key: str, model: str,
         schema_json=json.dumps(schema, indent=2, ensure_ascii=False)
     )
 
-    resposta = cliente.generate_content(
-        prompt,
-        generation_config=genai.types.GenerationConfig(max_output_tokens=max_tokens),
-    )
+    for tentativa in range(5):
+        try:
+            resposta = cliente.generate_content(
+                prompt,
+                generation_config=genai.types.GenerationConfig(max_output_tokens=max_tokens),
+            )
+            break
+        except ResourceExhausted as exc:
+            msg = str(exc)
+            if "PerDay" in msg or "per_day" in msg.lower():
+                raise RuntimeError(
+                    f"Cota diária do modelo '{model}' esgotada. "
+                    "Aguarde a renovação (meia-noite UTC) ou troque de modelo via LLM_MODEL."
+                ) from exc
+            if tentativa == 4:
+                raise
+            # extrai retry_delay sugerido pela API, senão usa backoff exponencial
+            import re as _re
+            m = _re.search(r"retry in ([\d.]+)s", msg)
+            espera = float(m.group(1)) + 5 if m else 30 * (2 ** tentativa)
+            print(f"Cota excedida. Aguardando {espera:.0f}s antes de tentar novamente... (tentativa {tentativa + 1}/5)")
+            time.sleep(espera)
 
     texto = resposta.text
     mapeamento = _extrair_json(texto)

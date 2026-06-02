@@ -1,13 +1,11 @@
 """
-pipeline/ifs.py
-===============
-CAMADA 5 — Validação Semântica (Índice de Fidelidade Semântica).
+5. Validação Semântica (IFS)
 
-Calcula o IFS, composto por quatro dimensões:
-  C — Completude:               nós migrados / registros de origem
-  E — Exatidão estrutural:      cardinalidade dos relacionamentos correta
-  R — Riqueza de relacionamentos: conectividade preservada
-  P — Preservação de propriedades: valores idênticos em amostragem
+Calcula o Índice de Fidelidade Semântica
+  C: Completude:               nós migrados / registros de origem
+  E: Exatidão estrutural:      cardinalidade dos relacionamentos correta
+  R: Riqueza de relacionamentos: conectividade preservada
+  P: Preservação de propriedades: valores idênticos em amostragem
 
     IFS = (C + E + R + P) / 4
 """
@@ -56,7 +54,7 @@ def calcular_ifs(schema, mapeamento, db_url, neo4j_uri, user, password,
     driver = GraphDatabase.driver(neo4j_uri, auth=(user, password))
     anomalias = []
 
-    # C — COMPLETUDE
+    # C: COMPLETUDE
     tabelas_no = {n["tabela_origem"] for n in mapeamento["nos"]}
     total_origem = sum(
         schema[t]["total_registros"] for t in tabelas_no if t in schema
@@ -70,7 +68,7 @@ def calcular_ifs(schema, mapeamento, db_url, neo4j_uri, user, password,
             f"Completude: origem={total_origem}, nós={total_nos}"
         )
 
-    # E — EXATIDÃO ESTRUTURAL
+    # E: EXATIDÃO ESTRUTURAL
     violacoes = 0
     base = 0
     with driver.session() as s:
@@ -92,7 +90,7 @@ def calcular_ifs(schema, mapeamento, db_url, neo4j_uri, user, password,
                 )
     exatidao = 1.0 - (violacoes / base) if base else 1.0
 
-    # R — RIQUEZA DE RELACIONAMENTOS
+    # R: RIQUEZA DE RELACIONAMENTOS
     rels_esperados = sum(
         schema[r["tabela_origem"]]["total_registros"]
         for r in mapeamento["relacionamentos_fk"]
@@ -110,7 +108,7 @@ def calcular_ifs(schema, mapeamento, db_url, neo4j_uri, user, password,
             f"Riqueza: esperados={rels_esperados}, criados={rels_criados}"
         )
 
-    # P — PRESERVAÇÃO DE PROPRIEDADES
+    # P: PRESERVAÇÃO DE PROPRIEDADES
     divergencias = 0
     amostras_total = 0
     with driver.session() as s:

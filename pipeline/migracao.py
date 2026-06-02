@@ -1,7 +1,5 @@
 """
-pipeline/migracao.py
-====================
-CAMADA 4 — Migração.
+4. Migração.
 
 Exporta as tabelas para CSV via SQLAlchemy/pandas e cria nós e
 relacionamentos no Neo4j conforme o mapeamento aprovado.

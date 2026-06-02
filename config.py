@@ -6,6 +6,9 @@ Credenciais devem vir de variáveis de ambiente sempre que possível.
 """
 
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Banco de origem (qualquer SGBD suportado pelo SQLAlchemy)
 # Exemplos:
@@ -21,7 +24,7 @@ NEO4J_PASS = os.getenv("NEO4J_PASS", "senha")
 
 # Modelo de Linguagem
 LLM_API_KEY = os.getenv("GOOGLE_API_KEY", "")
-LLM_MODEL   = os.getenv("LLM_MODEL", "gemini-2.0-flash")
+LLM_MODEL   = os.getenv("LLM_MODEL", "gemini-2.5-flash-lite")
 LLM_MAX_TOKENS = 4000
 
 # Migração

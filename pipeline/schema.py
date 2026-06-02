@@ -1,7 +1,5 @@
 """
-pipeline/schema.py
-==================
-CAMADA 1 — Leitura Universal de Esquema.
+1. Leitura Universal de Esquema.
 
 Conecta a qualquer SGBD relacional via SQLAlchemy e extrai os metadados
 da estrutura: tabelas, colunas, tipos, chaves primárias, chaves
