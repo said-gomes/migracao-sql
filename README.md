@@ -7,12 +7,12 @@ inferência semântica via Modelo de Linguagem e validação formal através do
 ## Arquitetura
 
 ```
-Camada 1 — Leitura de schema          (SQLAlchemy)
-Camada 2 — Inferência semântica       (LLM)
-Camada 3 — Revisão humana             (terminal)
-Camada 4 — Migração                   (CSV + Neo4j)
-Camada 5 — Validação (IFS)            (4 dimensões)
-Camada 6 — Recomendação via RWR       (opcional, pós-migração, requer GDS)
+Camada 1: Leitura de schema          (SQLAlchemy)
+Camada 2: Inferência semântica       (LLM)
+Camada 3: Revisão humana             (terminal)
+Camada 4: Migração                   (CSV + Neo4j)
+Camada 5: Validação (IFS)            (4 dimensões)
+Camada 6: Recomendação via RWR       (opcional, pós-migração, requer GDS)
 ```
 
 A Camada 6 é **opcional**, roda **apenas após uma migração validada** (IFS ≥ threshold) e **depende do plugin Neo4j Graph Data Science (GDS)**.
@@ -116,7 +116,7 @@ IFS = (C + E + R + P) / 4
 
 Migração aprovada quando `IFS >= 0.95` (parâmetro ajustável via `IFS_THRESHOLD`).
 
-## Camada 6 — Recomendação via Random Walk with Restart
+## Recomendação via Random Walk with Restart
 
 ### O que é o RWR
 
@@ -126,7 +126,7 @@ A implementação usa **Personalized PageRank** via Neo4j GDS, que é o equivale
 
 ### Por que está no projeto
 
-A Camada 6 demonstra que o grafo gerado pelo pipeline suporta algoritmos sofisticados de recomendação nativamente, validando que a qualidade da migração (IFS alto) se traduz em capacidade analítica real.
+RWR demonstra que o grafo gerado pelo pipeline suporta algoritmos sofisticados de recomendação nativamente, validando que a qualidade da migração (IFS alto) se traduz em capacidade analítica real.
 
 ### Pré-requisito
 
@@ -163,8 +163,3 @@ RWR_HABILITADO=true python main.py
 
 Qualquer SGBD com driver SQLAlchemy. Testado com MySQL; compatível com
 PostgreSQL, SQLite, SQL Server e outros, basta alterar a `DB_URL`.
-
-## Referências
-
-- Tong, H., Faloutsos, C., Pan, J. (2006). *Random Walk with Restart: Fast Solutions and Applications*. ICDM 2006.
-- Eksombatchai, C., Jindal, P., Liu, J. Z., Liu, Y., Sharma, R., Sugnet, C., Tseng, M., Leskovec, J. (2018). *Pixie: A System for Recommending 3+ Billion Items to 200+ Million Users in Real-Time*. WWW 2018.
