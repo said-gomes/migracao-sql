@@ -39,3 +39,12 @@ AMOSTRA_PRESERVACAO = 100  # nº de registros amostrados por tabela na dimensão
 ARQ_SCHEMA      = "outputs/schema.json"
 ARQ_MAPEAMENTO  = "outputs/mapeamento_semantico.json"
 ARQ_RELATORIO   = "outputs/relatorio_ifs.json"
+
+# ─── RWR — Camada 6 ──────────────────────────────────────────────────────
+RWR_HABILITADO            = os.getenv("RWR_HABILITADO", "false").lower() == "true"
+RWR_CLIENTE_ID            = int(os.getenv("RWR_CLIENTE_ID", "1"))
+RWR_PROBABILIDADE_RESTART = float(os.getenv("RWR_PROBABILIDADE_RESTART", "0.15"))
+RWR_TAMANHO_CAMINHADA     = int(os.getenv("RWR_TAMANHO_CAMINHADA", "80"))
+RWR_NUM_CAMINHADAS        = int(os.getenv("RWR_NUM_CAMINHADAS", "1000"))
+RWR_TOP_N                 = int(os.getenv("RWR_TOP_N", "10"))
+ARQ_RWR_RESULTADO         = "outputs/recomendacoes_rwr.json"
